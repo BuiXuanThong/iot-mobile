@@ -1,50 +1,143 @@
-import { StyleSheet, Switch } from 'react-native';
+import { StyleSheet, Switch, ScrollView } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { useState } from 'react';
 
+import {
+  LineChart
+} from "react-native-chart-kit";
+import { Dimensions } from "react-native";
+
+
+const screenWidth = Dimensions.get("window").width;
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const [isLedOn, setIsLedOn] = useState(false);
   const [isPumpOn, setIsPumpOn] = useState(false);
 
   return (
-    <View style={styles.container}>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.row}>
+          <View style={styles.widgets}>
+            <Text style={styles.value}> 525 </Text>
+            <Text style={styles.title}> Light </Text>
+          </View>
 
-      <View style={styles.row}>
-        <View style={styles.widgets}>
-          <Text style={styles.value}> 525 </Text>
-          <Text style={styles.title}> Light </Text>
+          <View style={styles.widgets}>
+            <Text style={styles.value}> 24</Text>
+            <Text style={styles.title}> Gr Humid </Text>
+          </View>
         </View>
 
-        <View style={styles.widgets}>
-          <Text style={styles.value}> 24</Text>
-          <Text style={styles.title}> Gr Humid </Text>
-        </View>
+        <View style={styles.row}>
+          <View style={styles.widgets}>
+            <Switch 
+              value={isLedOn}
+              onValueChange={(value) => setIsLedOn(value)}
+              thumbColor={isLedOn ? '#09b8ed' : '#f4f3f4'}
+            />
+            <Text style={styles.title}>Led</Text>
+          </View>
+
+          <View style={styles.widgets}> 
+            <Switch 
+              value={isPumpOn}
+              onValueChange={(value) => setIsPumpOn(value)}
+              thumbColor={isPumpOn ? '#09b8ed' : '#f4f3f4'}
+            />
+            <Text style={styles.title}>Pump</Text>
+          </View>
+        </View>    
+
+        <Text style={styles.title}>Light</Text>
+        <LineChart
+          data={{
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [
+              {
+                data: [
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100
+                ]
+              }
+            ]
+          }}
+          width={Dimensions.get("window").width * 0.94} // from react-native
+          height={220}
+          yAxisInterval={1} // optional, defaults to 1
+          chartConfig={{
+            backgroundGradientFrom: "#4287f5",
+            backgroundGradientTo: "#84b0f5",
+            decimalPlaces: 0, // optional, defaults to 2dp
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            style: {
+              borderRadius: 16
+            },
+            propsForDots: {
+              r: "2", // dot width
+              strokeWidth: "2",
+              stroke: "white"
+            }
+          }}
+          bezier
+          style={{ // box style
+            marginVertical: 8,
+            borderRadius: 5
+          }}
+        />
+
+        <Text style={styles.title}>Gr Humid</Text>
+        <LineChart
+          data={{
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [
+              {
+                data: [
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100
+                ]
+              }
+            ]
+          }}
+          width={Dimensions.get("window").width * 0.94} // from react-native
+          height={220}
+          yAxisInterval={1} // optional, defaults to 1
+          chartConfig={{
+            backgroundGradientFrom: "#4287f5",
+            backgroundGradientTo: "#84b0f5",
+            decimalPlaces: 0, // optional, defaults to 2dp
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            style: {
+              borderRadius: 16
+            },
+            propsForDots: {
+              r: "2", // dot width
+              strokeWidth: "2",
+              stroke: "white"
+            }
+          }}
+          bezier
+          style={{ // box style
+            marginVertical: 8,
+            borderRadius: 5
+          }}
+        />
+              
       </View>
-
-      <View style={styles.row}>
-        <View style={styles.widgets}>
-          <Switch 
-            value={isLedOn}
-            onValueChange={(value) => setIsLedOn(value)}
-            thumbColor={isLedOn ? '#09b8ed' : '#f4f3f4'}
-          />
-          <Text style={styles.title}>Led</Text>
-        </View>
-
-        <View style={styles.widgets}> 
-          <Switch 
-            value={isPumpOn}
-            onValueChange={(value) => setIsPumpOn(value)}
-            thumbColor={isPumpOn ? '#09b8ed' : '#f4f3f4'}
-          />
-          <Text style={styles.title}>Pump</Text>
-        </View>
-      </View>    
-
-      
-    </View>
+    </ScrollView>
   );
 }
 
