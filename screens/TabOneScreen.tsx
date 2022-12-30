@@ -1,31 +1,69 @@
 import { StyleSheet, Switch, ScrollView } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   LineChart
 } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
 
+import { infoClient } from "../utils/grpc";
+
 
 const screenWidth = Dimensions.get("window").width;
+const ledOnNum = 1;
+const pumpOnNum = 3;
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const [isLedOn, setIsLedOn] = useState(false);
   const [isPumpOn, setIsPumpOn] = useState(false);
+  const [light, setLight] = useState(0);
+  const [grHumi, setGrHumi] = useState(0);
+
+  useEffect(() => {
+    setInterval(() => {
+      // fetch data from server
+      infoClient.listData('light-1').then((data) => {
+        setLight(Number(data.response?.listDataList[0].value));
+      });
+
+      infoClient.listData('grhumi-1').then((data) => {
+        setGrHumi(Number(data.response?.listDataList[0].value));
+      });
+
+      // // fetch status
+      // infoClient.listData('led-1').then((data) => {
+      //   setIsLedOn(Number(data.response?.listDataList[0].value) == ledOnNum);
+      // });
+
+      // infoClient.listData('pump-1').then((data) => {
+      //   setIsPumpOn(Number(data.response?.listDataList[0].value) == pumpOnNum);
+      // });
+    }, 5000); // delay 5s
+  }, []);
+
+  const ledChange = (value: boolean) => {
+    if(value) {
+      infoClient.CreateData("led-1", 1);
+    } else {
+      infoClient.CreateData("led-1", 0);
+    }
+    setIsLedOn(value);
+  }
+    
 
   return (
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.row}>
           <View style={styles.widgets}>
-            <Text style={styles.value}> 525 </Text>
+            <Text style={styles.value}> {light} </Text>
             <Text style={styles.title}> Light </Text>
           </View>
 
           <View style={styles.widgets}>
-            <Text style={styles.value}> 24</Text>
+            <Text style={styles.value}> {grHumi} </Text>
             <Text style={styles.title}> Gr Humid </Text>
           </View>
         </View>
@@ -34,7 +72,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           <View style={styles.widgets}>
             <Switch 
               value={isLedOn}
-              onValueChange={(value) => setIsLedOn(value)}
+              onValueChange={(value) => ledChange(value)}
               thumbColor={isLedOn ? '#09b8ed' : '#f4f3f4'}
             />
             <Text style={styles.title}>Led</Text>
