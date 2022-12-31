@@ -42,20 +42,21 @@ class gRPCClientAbstract {
     try {
       option = { ...option, Authorization: `Bearer ${access_token}` };
 
-      console.log(
-        `%c gRPCClientRequest -> [${this.logFuncName(func)}] -> REQUEST:`,
-        "background-color: #deeb34; color: #000; font-size: 14px"
-      );
-      console.log(">>> request:", request.toObject());
-      console.log(">>> option:", option);
+      // console.log(
+      //   `%c gRPCClientRequest -> [${this.logFuncName(func)}] -> REQUEST:`,
+      //   "background-color: #deeb34; color: #000; font-size: 14px"
+      // );
+      // console.log(">>> request:", request.toObject());
+      // console.log(">>> option:", option);
 
       const response = await this.client[func](request, option);
 
-      console.log(
-        `%c>>>>> gRPCClientResponse -> [${this.logFuncName(func)}] -> SUCCESS:`,
-        "background-color: #23d947; color: #000; font-size: 14px",
-        response.toObject()
-      );
+      // console.log(
+      //   `%c>>>>> gRPCClientResponse -> [${this.logFuncName(func)}] -> SUCCESS:`,
+      //   "background-color: #23d947; color: #000; font-size: 14px",
+      //   response.toObject()
+      // );
+      // console.log("SUCCESS !!!");
 
       return {
         error: null,
