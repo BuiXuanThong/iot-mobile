@@ -1,4 +1,4 @@
-import { StyleSheet, Switch, ScrollView } from 'react-native';
+import { StyleSheet, Switch, ScrollView, Button } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { useEffect, useState } from 'react';
@@ -10,6 +10,8 @@ import { Dimensions } from "react-native";
 
 import { infoClient } from "../utils/grpc";
 import { Data } from "../lib/info/info_pb";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { KEY_ACCESS_TOKEN } from "../utils/grpc";
 
 
 const screenWidth = Dimensions.get("window").width;
@@ -34,6 +36,9 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
   const [grHumiList, setGrHumiList] = useState<Data.AsObject[]>();
 
   useEffect(() => {
+    // check if user is logged in
+    checkLogin();
+
     setInterval(() => {
       // fetch data from server
       infoClient.listData(LIGHT_FEED).then((data) => {
@@ -105,6 +110,15 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
     
     return values;
   }
+
+  const checkLogin = async () => {
+    const token = await AsyncStorage.getItem(KEY_ACCESS_TOKEN);
+    if(!token) {
+      navigation.navigate("Login");
+    }
+  }
+
+  
 
   return (
     <ScrollView>

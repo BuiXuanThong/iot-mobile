@@ -1,6 +1,6 @@
 import { StatusCode as grpcStatusCode } from "grpc-web";
-// import rpcAuthClient from "./client/auth";
-// import { Code as AuthCode } from "../../lib/auth/auth_code_pb";
+import rpcAuthClient from "./client/auth";
+import { Code as AuthCode } from "../../lib/auth/auth_code_pb";
 import Constants from "expo-constants";
 import rpcInfoClient from "./client/info";
 
@@ -42,4 +42,4 @@ const infoConfig = {
 
 export const infoClient = new rpcInfoClient(infoConfig);
 
-// export const authClient = new rpcAuthClient(authConfig);
+export const authClient = new rpcAuthClient(authConfig);
