@@ -23,7 +23,7 @@ const pumpOffNum = 6;
 // feed setting
 const LED_FEED = "led-2";
 const PUMP_FEED = "pump-2";
-const LIGHT_FEED = "light-2";
+const LIGHT_FEED = "light";
 const GRHUMI_FEED = "grhumi-2";
 
 
@@ -52,7 +52,7 @@ export default function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'
       infoClient.listData(PUMP_FEED).then((data) => {
         setIsPumpOn(Number(data.response?.listDataList[0].value) == pumpOnNum);
       });
-    }, 3000); // delay 5s
+    }, 2000); // delay 5s
   }, []);
 
   const ledChange = (value: boolean) => {
@@ -72,20 +72,6 @@ export default function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'
     }
     setIsPumpOn(value);
   }
-  
-  // // for chart
-  // const getLabel = () : string[] => {
-  //   let labels : string[] = [];
-  //   lightList?.reverse().map((item) => {
-  //     const sec = item.recordedAt.seconds;
-  //     const output = new Date(sec * 1000);
-  //     const localDate = output.toLocaleString();
-  //     // get date only "Sat Dec 31 10:12:03 2022"
-  //     const date = localDate.split(' ')[3].split(':');
-  //     labels.push(date[0] + ':' + date[1]);
-  //   });
-  //   return labels;
-  // }
 
   const getValue = (type: string) : number[] => {
     let tempList : Data.AsObject[] | undefined;
@@ -111,12 +97,12 @@ export default function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'
       <View style={styles.container}>
         <View style={styles.row}>
           <View style={styles.widgets}>
-            <Text style={styles.value}> {lightList ? lightList[0].value : "..."} </Text>
+            <Text style={styles.value}> {lightList?.length ? lightList[0].value : "..."} </Text>
             <Text style={styles.title}> Light </Text>
           </View>
 
           <View style={styles.widgets}>
-            <Text style={styles.value}> {grHumiList ? grHumiList[0].value : "..."} </Text>
+            <Text style={styles.value}> {grHumiList?.length ? grHumiList[0].value : "..."} </Text>
             <Text style={styles.title}> Gr Humid </Text>
           </View>
         </View>
