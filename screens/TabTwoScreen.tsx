@@ -52,7 +52,7 @@ export default function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'
       infoClient.listData(PUMP_FEED).then((data) => {
         setIsPumpOn(Number(data.response?.listDataList[0].value) == pumpOnNum);
       });
-    }, 2000); // delay 5s
+    }, 3000); // delay 5s
   }, []);
 
   const ledChange = (value: boolean) => {

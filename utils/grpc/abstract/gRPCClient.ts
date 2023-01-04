@@ -65,13 +65,13 @@ class gRPCClientAbstract {
     } catch (error: any) {
       switch (error?.code) {
         case grpcStatusCode.UNAUTHENTICATED:
-          console.log(
-            `%c>>>>> gRPCClientResponse -> [${this.logFuncName(
-              func
-            )}] -> ERROR -> UNAUTHENTICATED: `,
-            "background-color: #c0392b; color: #000; font-size: 14px",
-            error
-          );
+          // console.log(
+          //   `%c>>>>> gRPCClientResponse -> [${this.logFuncName(
+          //     func
+          //   )}] -> ERROR -> UNAUTHENTICATED: `,
+          //   "background-color: #c0392b; color: #000; font-size: 14px",
+          //   error
+          // );
           break;
 
         case grpcStatusCode.UNKNOWN:
